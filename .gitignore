@@ -1,0 +1,21 @@
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+*.o
+*.a
+*.so
+*.so.*
+
+# Eclipse Files
+.cproject
+.project
+.settings/
+.dep/
+
+# Build
+build/
+
+# Raw stuff
+raw/
