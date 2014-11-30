@@ -10,6 +10,7 @@ class CLauncherProgram
 		SDL_Renderer *renderer;
 
 		CTheme *theme;
+		CMenuStructure *menu_structure;
 		CScreen *current_screen;
 
 		bool running;
@@ -28,6 +29,8 @@ class CLauncherProgram
 
 		bool GetRunning(void)	{ return running; }
 		CTheme *GetTheme(void)	{ return theme; }
+
+		SDL_Texture *LoadImage(const char *file);
 };
 
 

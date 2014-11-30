@@ -5,30 +5,6 @@ CMenu::CMenu(CLauncherProgram *program, CScreen *previous) : CScreen(program, pr
 {
 	selected_entry = 0;
 	scroll = 0;
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("First")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("Second")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("Here is the menu!")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("Where do you wish to go?")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("There's a new menu entry rising up!")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("On that nowhere menu")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("There's a new menu entry rising up!")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("On that nowhere menu")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("There's a new menu entry rising up!")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("On that nowhere menu")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("There's a new menu entry rising up!")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("On that nowhere menu")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("There's a new menu entry rising up!")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("On that nowhere menu")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("There's a new menu entry rising up!")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("On that nowhere menu")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("There's a new menu entry rising up!")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("On that nowhere menu")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("There's a new menu entry rising up!")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("On that nowhere menu")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("There's a new menu entry rising up!")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("On that nowhere menu")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("There's a new menu entry rising up!")));
-	menu_entries.push_back(new CMenuEntry(GetProgram(), string("On that nowhere menu")));
 }
 
 CMenu::~CMenu(void)
@@ -37,6 +13,10 @@ CMenu::~CMenu(void)
 		delete (*i);
 }
 
+void CMenu::AddEntry(CMenuEntry *entry)
+{
+	menu_entries.push_back(entry);
+}
 
 void CMenu::Render(SDL_Renderer *renderer)
 {

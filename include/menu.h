@@ -18,6 +18,8 @@ class CMenu : public CScreen
 
 		void OnInputDirection(InputDirection dir);
 		void OnInputFire(void);
+
+		void AddEntry(CMenuEntry *entry);
 };
 
 #endif

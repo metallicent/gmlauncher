@@ -5,6 +5,8 @@
 class CTheme
 {
 	private:
+		CLauncherProgram *program;
+
 		SDL_Texture *background;
 		TTF_Font *menu_entry_font;
 
@@ -16,8 +18,8 @@ class CTheme
 
 		bool loaded_completely;
 
-		void Load(SDL_Renderer *renderer);
-		SDL_Texture *LoadImage(SDL_Renderer *renderer, const char *file);
+		void Load(void);
+		SDL_Texture *LoadImage(const char *file);
 		TTF_Font *LoadFont(const char *file, int size);
 
 		void UnLoad(void);
@@ -25,7 +27,7 @@ class CTheme
 		void UnLoadFont(TTF_Font *font);
 
 	public:
-		CTheme(SDL_Renderer *renderer);
+		CTheme(CLauncherProgram *program);
 		virtual ~CTheme(void);
 
 		SDL_Texture *GetBackground(void)	{ return background; }

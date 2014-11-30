@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -14,12 +15,17 @@ using namespace std;
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+#include <libxml/tree.h>
+
 
 class CRect;
 class CTheme;
 class CScreen;
 class CMenuEntry;
 class CMenu;
+class CMenuStructure;
+class CMenuTemplate;
+class CMenuEntryTemplate;
 class CLauncherProgram;
 
 #include "utils.h"
@@ -28,6 +34,8 @@ class CLauncherProgram;
 #include "screen.h"
 #include "menuentry.h"
 #include "menu.h"
+#include "menustructure.h"
+#include "menutemplate.h"
 #include "launcherprogram.h"
 
 #endif

@@ -1,9 +1,10 @@
 
 #include "includes.h"
 
-CTheme::CTheme(SDL_Renderer *renderer)
+CTheme::CTheme(CLauncherProgram *program)
 {
-	Load(renderer);
+	this->program = program;
+	Load();
 }
 
 CTheme::~CTheme(void)
@@ -11,35 +12,26 @@ CTheme::~CTheme(void)
 	UnLoad();
 }
 
-void CTheme::Load(SDL_Renderer *renderer)
+void CTheme::Load(void)
 {
 	loaded_completely = true;
 
 	screen_width = 1024;
 	screen_height = 768;
 
-	background = LoadImage(renderer, "themes/test/background.png");
+	background = LoadImage("themes/test/background.png");
 	menu_entry_font = LoadFont("themes/test/Ponderosa.ttf", 25);
 
 	menu_rect = CRect(50, 50, screen_width - 50*2, 692 - 50);
 	list_menu_entry_distance = 35;
 }
 
-SDL_Texture *CTheme::LoadImage(SDL_Renderer *renderer, const char *file)
+SDL_Texture *CTheme::LoadImage(const char *file)
 {
-	SDL_Surface *surface;
-	SDL_Texture *texture;
+	SDL_Texture *texture = program->LoadImage(file);
 
-	surface = IMG_Load(file);
-	if(!surface)
-	{
-		loaded_completely = false;
-		return 0;
-	}
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
 	if(!texture)
 		loaded_completely = false;
-	SDL_FreeSurface(surface);
 
 	return texture;
 }

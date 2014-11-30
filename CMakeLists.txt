@@ -12,7 +12,9 @@ set(gmlauncher_src
 	src/theme.cpp
 	src/screen.cpp
 	src/menu.cpp
-	src/menuentry.cpp)
+	src/menuentry.cpp
+	src/menustructure.cpp
+	src/menutemplate.cpp)
 
 add_definitions(-g -Wall)
 

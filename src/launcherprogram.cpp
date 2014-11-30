@@ -14,9 +14,10 @@ CLauncherProgram::CLauncherProgram(void)
 		throw "Failed to create Renderer";
 	}
 
-	theme = new CTheme(renderer);
+	theme = new CTheme(this);
 
-	current_screen = new CMenu(this, 0);
+	menu_structure = new CMenuStructure(this, "menu_structure.xml");
+	current_screen = menu_structure->CreateMainScreen();
 
 	running = true;
 }
@@ -89,4 +90,18 @@ void CLauncherProgram::Render(void)
 void CLauncherProgram::Quit(void)
 {
 	running = false;
+}
+
+SDL_Texture *CLauncherProgram::LoadImage(const char *file)
+{
+	SDL_Surface *surface;
+	SDL_Texture *texture;
+
+	surface = IMG_Load(file);
+	if(!surface)
+		return 0;
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_FreeSurface(surface);
+
+	return texture;
 }
