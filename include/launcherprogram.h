@@ -10,6 +10,7 @@ class CLauncherProgram
 		SDL_Renderer *renderer;
 
 		CTheme *theme;
+		CScreen *current_screen;
 
 		bool running;
 
@@ -26,6 +27,7 @@ class CLauncherProgram
 		void Render(void);
 
 		bool GetRunning(void)	{ return running; }
+		CTheme *GetTheme(void)	{ return theme; }
 };
 
 
