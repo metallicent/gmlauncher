@@ -22,8 +22,12 @@ void CTheme::Load(void)
 	background = LoadImage("themes/test/background.png");
 	menu_entry_font = LoadFont("themes/test/Ponderosa.ttf", 25);
 
-	menu_rect = CRect(50, 50, screen_width - 50*2, 692 - 50);
-	list_menu_entry_distance = 35;
+	menu_rect = CRect(75, 75, screen_width - 75*2, 692 - 50);
+	list_menu_entry_distance = 38;
+	menu_text_color.r = 255;
+	menu_text_color.g = 255;
+	menu_text_color.b = 255;
+	menu_text_color.a = 255;
 }
 
 SDL_Texture *CTheme::LoadImage(const char *file)

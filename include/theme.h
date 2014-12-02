@@ -14,6 +14,7 @@ class CTheme
 
 		CRect menu_rect;
 		int list_menu_entry_distance;
+		SDL_Color menu_text_color;
 
 
 		bool loaded_completely;
@@ -39,6 +40,7 @@ class CTheme
 		CRect GetMenuRect(void)				{ return menu_rect; }
 		int GetListMenuEntryDistance(void)	{ return list_menu_entry_distance; }
 		int GetMaxListMenuEntries(void)		{ return max(0, menu_rect.height / list_menu_entry_distance - 1); }
+		SDL_Color GetMenuTextColor(void)	{ return menu_text_color; }
 };
 
 #endif

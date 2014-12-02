@@ -21,7 +21,6 @@ void CMenu::AddEntry(CMenuEntry *entry)
 void CMenu::Render(SDL_Renderer *renderer)
 {
 	CTheme *theme = GetProgram()->GetTheme();
-	SDL_Color color = {255, 0, 0};
 	CRect menu_rect = theme->GetMenuRect();
 
 	int x, y;
@@ -37,7 +36,7 @@ void CMenu::Render(SDL_Renderer *renderer)
 
 		entry = menu_entries[i];
 
-		SDL_Surface *surface = TTF_RenderText_Solid(theme->GetMenuEntryFont(), ((i==selected_entry?string(">"):string()) + entry->GetText()).c_str(), color);
+		SDL_Surface *surface = TTF_RenderText_Solid(theme->GetMenuEntryFont(), ((i==selected_entry?string(">"):string()) + entry->GetText()).c_str(), theme->GetMenuTextColor());
 		SDL_Texture *tex = SDL_CreateTextureFromSurface(renderer, surface);
 		SDL_FreeSurface(surface);
 
