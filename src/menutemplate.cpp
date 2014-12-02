@@ -39,13 +39,13 @@ CScreen *CMenuTemplate::CreateScreen(CScreen *previous)
 // ------------------------------------------
 
 
-CMenuEntryTemplate::CMenuEntryTemplate(CLauncherProgram *program, string text, const char *thumb_file)
+CMenuEntryTemplate::CMenuEntryTemplate(CLauncherProgram *program, string text, string thumb_file)
 {
 	this->program = program;
 	this->text = text;
 
 	thumbnail = 0;
-	if(thumb_file)
+	if(thumb_file.size() > 0)
 		LoadThumbnail(thumb_file);
 }
 
@@ -55,14 +55,14 @@ CMenuEntryTemplate::~CMenuEntryTemplate(void)
 		SDL_DestroyTexture(thumbnail);
 }
 
-void CMenuEntryTemplate::LoadThumbnail(const char *file)
+void CMenuEntryTemplate::LoadThumbnail(string file)
 {
-	thumbnail = program->LoadImage(file);
+	thumbnail = program->LoadImage(file.c_str());
 }
 
 
 
-CCommandMenuEntryTemplate::CCommandMenuEntryTemplate(CLauncherProgram *program, string text, string command, const char *thumb_file) : CMenuEntryTemplate(program, text, thumb_file)
+CCommandMenuEntryTemplate::CCommandMenuEntryTemplate(CLauncherProgram *program, string text, string command, string thumb_file) : CMenuEntryTemplate(program, text, thumb_file)
 {
 	this->command = command;
 }
@@ -77,9 +77,10 @@ CMenuEntry *CCommandMenuEntryTemplate::CreateMenuEntry(void)
 }
 
 
-CScreenMenuEntryTemplate::CScreenMenuEntryTemplate(CLauncherProgram *program, string text, CScreenTemplate *screen_template, const char *thumb_file) : CMenuEntryTemplate(program, text, thumb_file)
+CScreenMenuEntryTemplate::CScreenMenuEntryTemplate(CLauncherProgram *program, string text, CMenuStructure *menu_structure, string screen_name, string thumb_file) : CMenuEntryTemplate(program, text, thumb_file)
 {
-	this->screen_template = screen_template;
+	this->menu_structure = menu_structure;
+	this->screen_name = screen_name;
 }
 
 CScreenMenuEntryTemplate::~CScreenMenuEntryTemplate(void)
@@ -88,11 +89,12 @@ CScreenMenuEntryTemplate::~CScreenMenuEntryTemplate(void)
 
 CMenuEntry *CScreenMenuEntryTemplate::CreateMenuEntry(void)
 {
-	return new CScreenMenuEntry(program, text, screen_template);
+	CScreenTemplate *t = menu_structure->GetScreenTemplate(screen_name);
+	return new CScreenMenuEntry(program, text, t);
 }
 
 
-CQuitMenuEntryTemplate::CQuitMenuEntryTemplate(CLauncherProgram *program, string text, const char *thumb_file) : CMenuEntryTemplate(program, text, thumb_file)
+CQuitMenuEntryTemplate::CQuitMenuEntryTemplate(CLauncherProgram *program, string text, string thumb_file) : CMenuEntryTemplate(program, text, thumb_file)
 {
 }
 

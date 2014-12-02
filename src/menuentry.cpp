@@ -40,6 +40,9 @@ CScreenMenuEntry::~CScreenMenuEntry(void)
 
 void CScreenMenuEntry::Trigger(void)
 {
+	if(!screen_template)
+		return;
+
 	CScreen *screen = screen_template->CreateScreen();
 	GetProgram()->ChangeToScreen(screen);
 }

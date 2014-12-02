@@ -36,10 +36,10 @@ class CMenuEntryTemplate
 		string text;
 		SDL_Texture *thumbnail;
 
-		void LoadThumbnail(const char *file);
+		void LoadThumbnail(string file);
 
 	public:
-		CMenuEntryTemplate(CLauncherProgram *program, string text, const char *thumb_file = 0);
+		CMenuEntryTemplate(CLauncherProgram *program, string text, string thumb_file = string());
 		virtual ~CMenuEntryTemplate(void);
 
 		SDL_Texture *GetThumbnail(void)	{ return thumbnail; }
@@ -53,7 +53,7 @@ class CCommandMenuEntryTemplate : public CMenuEntryTemplate
 		string command;
 
 	public:
-		CCommandMenuEntryTemplate(CLauncherProgram *program, string text, string command, const char *thumb_file = 0);
+		CCommandMenuEntryTemplate(CLauncherProgram *program, string text, string command, string thumb_file = string());
 		~CCommandMenuEntryTemplate(void);
 
 		CMenuEntry *CreateMenuEntry(void);
@@ -62,10 +62,11 @@ class CCommandMenuEntryTemplate : public CMenuEntryTemplate
 class CScreenMenuEntryTemplate : public CMenuEntryTemplate
 {
 	private:
-		CScreenTemplate *screen_template;
+		CMenuStructure *menu_structure;
+		string screen_name;
 
 	public:
-		CScreenMenuEntryTemplate(CLauncherProgram *program, string text, CScreenTemplate *screen_template, const char *thumb_file = 0);
+		CScreenMenuEntryTemplate(CLauncherProgram *program, string text, CMenuStructure *menu_structure, string screen_name, string thumb_file = string());
 		~CScreenMenuEntryTemplate(void);
 
 		CMenuEntry *CreateMenuEntry(void);
@@ -74,7 +75,7 @@ class CScreenMenuEntryTemplate : public CMenuEntryTemplate
 class CQuitMenuEntryTemplate : public CMenuEntryTemplate
 {
 	public:
-		CQuitMenuEntryTemplate(CLauncherProgram *program, string text, const char *thumb_file = 0);
+		CQuitMenuEntryTemplate(CLauncherProgram *program, string text, string thumb_file = string());
 		~CQuitMenuEntryTemplate(void);
 
 		CMenuEntry *CreateMenuEntry(void);
