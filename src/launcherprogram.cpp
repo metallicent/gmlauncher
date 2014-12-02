@@ -47,7 +47,7 @@ void CLauncherProgram::OnKeyDown(SDL_KeyboardEvent event)
 {
 	switch(event.keysym.scancode)
 	{
-		case SDL_SCANCODE_ESCAPE:
+		case SDL_SCANCODE_F1:
 			Quit();
 			break;
 		case SDL_SCANCODE_UP:
@@ -70,6 +70,9 @@ void CLauncherProgram::OnKeyDown(SDL_KeyboardEvent event)
 			if(current_screen)
 				current_screen->OnInputFire();
 			break;
+		case SDL_SCANCODE_ESCAPE:
+			ChangeToPreviousScreen();
+			break;
 		default:
 			break;
 	}
@@ -90,6 +93,25 @@ void CLauncherProgram::Render(void)
 void CLauncherProgram::Quit(void)
 {
 	running = false;
+}
+
+void CLauncherProgram::ChangeToScreen(CScreen *screen)
+{
+	screen->SetPreviousScreen(current_screen);
+	current_screen = screen;
+}
+
+void CLauncherProgram::ChangeToPreviousScreen(void)
+{
+	if(!current_screen)
+		return;
+
+	if(current_screen->GetPreviousScreen())
+	{
+		CScreen *s = current_screen;
+		current_screen = current_screen->GetPreviousScreen();
+		delete s;
+	}
 }
 
 SDL_Texture *CLauncherProgram::LoadImage(const char *file)

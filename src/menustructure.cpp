@@ -17,11 +17,17 @@ CMenuStructure::~CMenuStructure(void)
 
 bool CMenuStructure::LoadFromFile(const char *file)
 {
+	CMenuTemplate *sub = new CMenuTemplate(program, string("sub"), CMenuTemplate::LIST_MENU);
+	sub->AddEntry(new CCommandMenuEntryTemplate(program, string("submenu"), string("glxgears")));
+	sub->AddEntry(new CCommandMenuEntryTemplate(program, string("submensdafsdfasfu"), string("glxgears")));
+	sub->AddEntry(new CCommandMenuEntryTemplate(program, string("submensdafsdfasfu"), string("glxgears")));
+
 	CMenuTemplate *m = new CMenuTemplate(program, string("main"), CMenuTemplate::LIST_MENU);
-	m->AddEntry(new CMenuEntryTemplate(program, string("Mah Boi!"), CMenuEntryTemplate::COMMAND_ACTION));
-	m->AddEntry(new CMenuEntryTemplate(program, string("This peace is..."), CMenuEntryTemplate::COMMAND_ACTION));
-	m->AddEntry(new CMenuEntryTemplate(program, string("...peace is what all true warriors strive for!"), CMenuEntryTemplate::COMMAND_ACTION));
-	m->AddEntry(new CMenuEntryTemplate(program, string("Enough! My shit sails in the morning!"), CMenuEntryTemplate::QUIT_ACTION));
+	m->AddEntry(new CCommandMenuEntryTemplate(program, string("Mah Boi!"), string("glxgears")));
+	m->AddEntry(new CCommandMenuEntryTemplate(program, string("This peace is..."), string()));
+	m->AddEntry(new CCommandMenuEntryTemplate(program, string("...peace is what all true warriors strive for!"), string()));
+	m->AddEntry(new CScreenMenuEntryTemplate(program, string("Submenu"), sub));
+	m->AddEntry(new CQuitMenuEntryTemplate(program, string("Enough! My shit sails in the morning!")));
 	menu_templates[string("main")] = m;
 	main_menu_template = m;
 
@@ -32,5 +38,5 @@ CScreen *CMenuStructure::CreateMainScreen(void)
 {
 	if(!main_menu_template)
 		return 0;
-	return main_menu_template->CreateMenu(0);
+	return main_menu_template->CreateScreen(0);
 }

@@ -10,8 +10,10 @@ class CScreen
 		CScreen *previous_screen;
 
 	public:
-		CScreen(CLauncherProgram *program, CScreen *previous);
+		CScreen(CLauncherProgram *program, CScreen *previous = 0);
 		virtual ~CScreen(void) {};
+
+		void SetPreviousScreen(CScreen *previous)	{ this->previous_screen = previous; }
 
 		CLauncherProgram *GetProgram(void)	{ return program; }
 		CScreen *GetPreviousScreen(void)	{ return previous_screen; }

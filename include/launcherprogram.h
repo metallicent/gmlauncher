@@ -15,8 +15,6 @@ class CLauncherProgram
 
 		bool running;
 
-		void Quit(void);
-
 		void OnKeyDown(SDL_KeyboardEvent event);
 
 	public:
@@ -26,6 +24,11 @@ class CLauncherProgram
 		void ProcessEvent(SDL_Event event);
 		void Update(void);
 		void Render(void);
+
+		void Quit(void);
+
+		void ChangeToScreen(CScreen *screen);
+		void ChangeToPreviousScreen(void);
 
 		bool GetRunning(void)	{ return running; }
 		CTheme *GetTheme(void)	{ return theme; }

@@ -21,6 +21,7 @@ using namespace std;
 class CRect;
 class CTheme;
 class CScreen;
+class CScreenTemplate;
 class CMenuEntry;
 class CMenu;
 class CMenuStructure;
@@ -32,6 +33,7 @@ class CLauncherProgram;
 #include "global.h"
 #include "theme.h"
 #include "screen.h"
+#include "screentemplate.h"
 #include "menuentry.h"
 #include "menu.h"
 #include "menustructure.h"
