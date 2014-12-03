@@ -29,6 +29,8 @@ class CMenuTemplate;
 class CMenuEntryTemplate;
 class CLauncherProgram;
 
+#include "settings.h"
+
 #include "utils.h"
 #include "global.h"
 #include "theme.h"

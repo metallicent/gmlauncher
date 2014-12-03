@@ -3,7 +3,7 @@
 
 CLauncherProgram::CLauncherProgram(void)
 {
-	window = SDL_CreateWindow("gmlauncher", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("gmlauncher", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_SHOWN | (FULLSCREEN_ENABLED ? SDL_WINDOW_FULLSCREEN : 0));
 	if(!window)
 		throw "Failed to create Window";
 
@@ -18,7 +18,7 @@ CLauncherProgram::CLauncherProgram(void)
 
 	theme = new CTheme(this);
 
-	menu_structure = new CMenuStructure(this, "menu_structure.xml");
+	menu_structure = new CMenuStructure(this, MENU_STRUCTURE_FILE);
 	current_screen = menu_structure->CreateMainScreen();
 
 	running = true;
