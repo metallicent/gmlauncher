@@ -31,7 +31,7 @@ class CMenuEntryTemplate
 		CLauncherProgram *program;
 
 		string text;
-		SDL_Texture *thumbnail;
+		SDL_Surface *thumb_surface;
 
 		void LoadThumbnail(string file);
 
@@ -39,7 +39,7 @@ class CMenuEntryTemplate
 		CMenuEntryTemplate(CLauncherProgram *program, string text, string thumb_file = string());
 		virtual ~CMenuEntryTemplate(void);
 
-		SDL_Texture *GetThumbnail(void)	{ return thumbnail; }
+		SDL_Surface *GetThumbSurface(void)	{ return thumb_surface; }
 
 		virtual CMenuEntry *CreateMenuEntry(void) =0;
 };

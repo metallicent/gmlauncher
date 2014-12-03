@@ -34,7 +34,7 @@ CScreen *CMenuTemplate::CreateScreen(CScreen *previous)
 			m = new CListMenu(program, previous);
 			break;
 		case THUMBS_MENU:
-			return 0; // TODO
+			m = new CThumbsMenu(program, previous);
 			break;
 		default:
 			return 0;
@@ -60,20 +60,20 @@ CMenuEntryTemplate::CMenuEntryTemplate(CLauncherProgram *program, string text, s
 	this->program = program;
 	this->text = text;
 
-	thumbnail = 0;
+	this->thumb_surface = 0;
 	if(thumb_file.size() > 0)
 		LoadThumbnail(thumb_file);
 }
 
 CMenuEntryTemplate::~CMenuEntryTemplate(void)
 {
-	if(thumbnail)
-		SDL_DestroyTexture(thumbnail);
+	if(thumb_surface)
+		SDL_FreeSurface(thumb_surface);
 }
 
 void CMenuEntryTemplate::LoadThumbnail(string file)
 {
-	thumbnail = program->LoadImage(file.c_str());
+	thumb_surface = IMG_Load(file.c_str());
 }
 
 
@@ -89,7 +89,7 @@ CCommandMenuEntryTemplate::~CCommandMenuEntryTemplate(void)
 
 CMenuEntry *CCommandMenuEntryTemplate::CreateMenuEntry(void)
 {
-	return new CCommandMenuEntry(program, text, command);
+	return new CCommandMenuEntry(program, text, command, thumb_surface);
 }
 
 
@@ -106,7 +106,7 @@ CScreenMenuEntryTemplate::~CScreenMenuEntryTemplate(void)
 CMenuEntry *CScreenMenuEntryTemplate::CreateMenuEntry(void)
 {
 	CScreenTemplate *t = menu_structure->GetScreenTemplate(screen_name);
-	return new CScreenMenuEntry(program, text, t);
+	return new CScreenMenuEntry(program, text, t, thumb_surface);
 }
 
 
@@ -120,7 +120,7 @@ CQuitMenuEntryTemplate::~CQuitMenuEntryTemplate(void)
 
 CMenuEntry *CQuitMenuEntryTemplate::CreateMenuEntry(void)
 {
-	return new CQuitMenuEntry(program, text);
+	return new CQuitMenuEntry(program, text, thumb_surface);
 }
 
 

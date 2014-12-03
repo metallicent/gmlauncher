@@ -33,4 +33,20 @@ class CListMenu : public CMenu
 
 };
 
+class CThumbsMenu : public CMenu
+{
+	private:
+		int selected_entry;
+		int scroll;
+
+	public:
+		CThumbsMenu(CLauncherProgram *program, CScreen *previous);
+		~CThumbsMenu(void);
+
+		void Render(SDL_Renderer *renderer);
+
+		void OnInputDirection(InputDirection dir);
+		void OnInputFire(void);
+};
+
 #endif

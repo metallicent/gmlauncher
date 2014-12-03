@@ -1,10 +1,11 @@
 
 #include "includes.h"
 
-CMenuEntry::CMenuEntry(CLauncherProgram *program, string text)
+CMenuEntry::CMenuEntry(CLauncherProgram *program, string text, SDL_Surface *thumb_surface)
 {
 	this->program = program;
 	this->text = text;
+	this->thumb_surface = thumb_surface;
 	unselected_tex = 0;
 	selected_tex = 0;
 }
@@ -45,12 +46,20 @@ void CMenuEntry::RenderList(void)
 
 void CMenuEntry::RenderThumb(void)
 {
+	CTheme *theme = program->GetTheme();
 
+	if(unselected_tex)
+		SDL_DestroyTexture(unselected_tex);
+	unselected_tex = theme->RenderUnselectedThumbsMenuEntry(text, thumb_surface);
+
+	if(selected_tex)
+		SDL_DestroyTexture(selected_tex);
+	selected_tex = theme->RenderSelectedThumbsMenuEntry(text, thumb_surface);
 }
 
 
 
-CCommandMenuEntry::CCommandMenuEntry(CLauncherProgram *program, string text, string command) : CMenuEntry(program, text)
+CCommandMenuEntry::CCommandMenuEntry(CLauncherProgram *program, string text, string command, SDL_Surface *thumb_surface) : CMenuEntry(program, text, thumb_surface)
 {
 	this->command = command;
 }
@@ -66,7 +75,7 @@ void CCommandMenuEntry::Trigger(void)
 
 
 
-CScreenMenuEntry::CScreenMenuEntry(CLauncherProgram *program, string text, CScreenTemplate *screen_template) : CMenuEntry(program, text)
+CScreenMenuEntry::CScreenMenuEntry(CLauncherProgram *program, string text, CScreenTemplate *screen_template, SDL_Surface *thumb_surface) : CMenuEntry(program, text, thumb_surface)
 {
 	this->screen_template = screen_template;
 }
@@ -87,7 +96,7 @@ void CScreenMenuEntry::Trigger(void)
 
 
 
-CQuitMenuEntry::CQuitMenuEntry(CLauncherProgram *program, string text) : CMenuEntry(program, text)
+CQuitMenuEntry::CQuitMenuEntry(CLauncherProgram *program, string text, SDL_Surface *thumb_surface) : CMenuEntry(program, text, thumb_surface)
 {
 }
 

@@ -9,6 +9,8 @@ class CMenuEntry
 
 		string text;
 
+		SDL_Surface *thumb_surface;
+
 		SDL_Texture *unselected_tex;
 		SDL_Texture *selected_tex;
 
@@ -16,7 +18,7 @@ class CMenuEntry
 		void RenderThumb(void);
 
 	public:
-		CMenuEntry(CLauncherProgram *program, string text);
+		CMenuEntry(CLauncherProgram *program, string text, SDL_Surface *thumb_surface = 0);
 		virtual ~CMenuEntry(void);
 
 		string GetText(void)				{ return text; }
@@ -35,7 +37,7 @@ class CCommandMenuEntry : public CMenuEntry
 		string command;
 
 	public:
-		CCommandMenuEntry(CLauncherProgram *program, string text, string command);
+		CCommandMenuEntry(CLauncherProgram *program, string text, string command, SDL_Surface *thumb_surface = 0);
 		~CCommandMenuEntry(void);
 
 		void Trigger(void);
@@ -47,7 +49,7 @@ class CScreenMenuEntry : public CMenuEntry
 		CScreenTemplate *screen_template;
 
 	public:
-		CScreenMenuEntry(CLauncherProgram *program, string text, CScreenTemplate *screen_template);
+		CScreenMenuEntry(CLauncherProgram *program, string text, CScreenTemplate *screen_template, SDL_Surface *thumb_surface = 0);
 		~CScreenMenuEntry(void);
 
 		void Trigger(void);
@@ -56,7 +58,7 @@ class CScreenMenuEntry : public CMenuEntry
 class CQuitMenuEntry : public CMenuEntry
 {
 	public:
-		CQuitMenuEntry(CLauncherProgram *program, string text);
+		CQuitMenuEntry(CLauncherProgram *program, string text, SDL_Surface *thumb_surface = 0);
 		~CQuitMenuEntry(void);
 
 		void Trigger(void);
