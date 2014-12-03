@@ -7,6 +7,9 @@ class CMenu : public CScreen
 	protected:
 		vector<CMenuEntry *> menu_entries;
 
+		void RenderDownArrow(SDL_Renderer *renderer);
+		void RenderUpArrow(SDL_Renderer *renderer);
+
 	public:
 		CMenu(CLauncherProgram *program, CScreen *previous);
 		virtual ~CMenu(void);

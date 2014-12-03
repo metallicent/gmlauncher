@@ -35,7 +35,7 @@ class CLauncherProgram
 		CTheme *GetTheme(void)			{ return theme; }
 		SDL_Renderer *GetRenderer(void)	{ return renderer; }
 
-		SDL_Texture *LoadImage(const char *file);
+		SDL_Texture *LoadTexture(const char *file);
 };
 
 

@@ -3,7 +3,7 @@
 
 CLauncherProgram::CLauncherProgram(void)
 {
-	window = SDL_CreateWindow("gmlauncher", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_SHOWN | (FULLSCREEN_ENABLED ? SDL_WINDOW_FULLSCREEN : 0));
+	window = SDL_CreateWindow("gmlauncher", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | (FULLSCREEN_ENABLED ? SDL_WINDOW_FULLSCREEN : 0));
 	if(!window)
 		throw "Failed to create Window";
 
@@ -17,6 +17,8 @@ CLauncherProgram::CLauncherProgram(void)
 	SDL_ShowCursor(SDL_DISABLE);
 
 	theme = new CTheme(this);
+	if(!theme->GetLoadedCompletely())
+		printf("Warning: Theme could not be loaded completely!");
 
 	menu_structure = new CMenuStructure(this, MENU_STRUCTURE_FILE);
 	current_screen = menu_structure->CreateMainScreen();
@@ -125,7 +127,7 @@ void CLauncherProgram::ChangeToPreviousScreen(void)
 	}
 }
 
-SDL_Texture *CLauncherProgram::LoadImage(const char *file)
+SDL_Texture *CLauncherProgram::LoadTexture(const char *file)
 {
 	SDL_Surface *surface;
 	SDL_Texture *texture;

@@ -16,15 +16,26 @@ void CTheme::Load(void)
 {
 	loaded_completely = true;
 
-	screen_width = 1024;
-	screen_height = 768;
+
+	// make changes here, if you want to change specific positions on the screen or filenames
+
+	screen_width = SCREEN_WIDTH;
+	screen_height = SCREEN_HEIGHT;
 
 	string theme_folder = string(THEME_FOLDER) + string("/");
 
-	background = LoadImage(theme_folder + string("background.png"));
-	list_menu_entry_font = LoadFont(theme_folder + string("Ponderosa.ttf"), 25);
-	thumbs_menu_entry_font = LoadFont(theme_folder + string("Ponderosa.ttf"), 16);
+	background = LoadTexture(theme_folder + string("background.png"));
+	list_menu_entry_font = LoadFont(theme_folder + string("font.ttf"), 25);
+	thumbs_menu_entry_font = LoadFont(theme_folder + string("font.ttf"), 16);
+
+	arrow_down = LoadTexture(theme_folder + string("arrow_down.png"));
+	arrow_up = LoadTexture(theme_folder + string("arrow_up.png"));
+
+	arrow_down_x = screen_width - 30;	arrow_down_y = screen_height - 120;
+	arrow_up_x = arrow_down_x;			arrow_up_y = 50;
+
 	thumbnail_border = LoadSurface(theme_folder + string("thumbnail_border.png"));
+	thumbnail_border_selected = LoadSurface(theme_folder + string("thumbnail_border_selected.png"));
 
 	menu_rect = CRect(75, 75, screen_width - 75*2, 682 - 75);
 	list_menu_entry_distance = 38;
@@ -44,8 +55,11 @@ void CTheme::Load(void)
 
 void CTheme::UnLoad(void)
 {
-	UnLoadImage(background);
+	UnLoadTexture(background);
+	UnLoadTexture(arrow_up);
+	UnLoadTexture(arrow_down);
 	UnLoadSurface(thumbnail_border);
+	UnLoadSurface(thumbnail_border_selected);
 	UnLoadFont(list_menu_entry_font);
 	UnLoadFont(thumbs_menu_entry_font);
 }
@@ -58,9 +72,9 @@ SDL_Surface *CTheme::LoadSurface(string file)
 	return s;
 }
 
-SDL_Texture *CTheme::LoadImage(string file)
+SDL_Texture *CTheme::LoadTexture(string file)
 {
-	SDL_Texture *texture = program->LoadImage(file.c_str());
+	SDL_Texture *texture = program->LoadTexture(file.c_str());
 
 	if(!texture)
 		loaded_completely = false;
@@ -77,7 +91,7 @@ TTF_Font *CTheme::LoadFont(string file, int size)
 }
 
 
-void CTheme::UnLoadImage(SDL_Texture *tex)
+void CTheme::UnLoadTexture(SDL_Texture *tex)
 {
 	if(!tex)
 		return;
@@ -118,7 +132,7 @@ SDL_Texture *CTheme::RenderSelectedListMenuEntry(string text)
 	return tex;
 }
 
-SDL_Surface *CTheme::RenderBasicThumbsMenuEntry(SDL_Surface *thumb)
+SDL_Surface *CTheme::RenderBasicThumbsMenuEntry(SDL_Surface *thumb, bool selected)
 {
 	Uint32 rmask = 0xff000000;
 	Uint32 gmask = 0x00ff0000;
@@ -139,7 +153,7 @@ SDL_Surface *CTheme::RenderBasicThumbsMenuEntry(SDL_Surface *thumb)
 	{
 		float dst_aspect = (float)thumb_height / (float)thumb_width;
 
-		if(dst_aspect > (float)thumb->h / (float)thumb->w) // thumb has greater width
+		if(dst_aspect > (float)thumb->h / (float)thumb->w) // thumbnail is wider
 		{
 			src.y = 0;
 			src.h = thumb->h;
@@ -148,7 +162,7 @@ SDL_Surface *CTheme::RenderBasicThumbsMenuEntry(SDL_Surface *thumb)
 			src.x = (thumb->w - w) / 2;
 			src.w = w;
 		}
-		else // thumb is taller
+		else // thumbnail is taller
 		{
 			src.x = 0;
 			src.w = thumb->w;
@@ -163,14 +177,14 @@ SDL_Surface *CTheme::RenderBasicThumbsMenuEntry(SDL_Surface *thumb)
 	else
 		SDL_FillRect(surface, &dst, 0xff0000ff);
 
-	SDL_BlitSurface(GetThumbnailBorder(), 0, surface, 0);
+	SDL_BlitSurface(selected ? GetThumbnailBorderSelected() : GetThumbnailBorder(), 0, surface, 0);
 
 	return surface;
 }
 
 SDL_Texture *CTheme::RenderUnselectedThumbsMenuEntry(string text, SDL_Surface *thumb)
 {
-	SDL_Surface *surface = RenderBasicThumbsMenuEntry(thumb);
+	SDL_Surface *surface = RenderBasicThumbsMenuEntry(thumb, false);
 
 	SDL_Surface *text_surface = TTF_RenderText_Solid(GetThumbsMenuEntryFont(), text.c_str(), GetUnselectedMenuEntryTextColor());
 	SDL_Rect r;
@@ -187,7 +201,7 @@ SDL_Texture *CTheme::RenderUnselectedThumbsMenuEntry(string text, SDL_Surface *t
 
 SDL_Texture *CTheme::RenderSelectedThumbsMenuEntry(string text, SDL_Surface *thumb)
 {
-	SDL_Surface *surface = RenderBasicThumbsMenuEntry(thumb);
+	SDL_Surface *surface = RenderBasicThumbsMenuEntry(thumb, true);
 
 	SDL_Surface *text_surface = RenderTextWithBackground(GetThumbsMenuEntryFont(), text.c_str(), GetSelectedMenuEntryTextColor(), GetSelectedMenuEntryTextBackgroundColor());
 	SDL_Rect r;

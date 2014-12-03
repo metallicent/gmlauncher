@@ -16,6 +16,30 @@ void CMenu::AddEntry(CMenuEntry *entry)
 	menu_entries.push_back(entry);
 }
 
+void CMenu::RenderDownArrow(SDL_Renderer *renderer)
+{
+	CTheme *theme = GetProgram()->GetTheme();
+
+	SDL_Texture *tex = theme->GetArrowDown();
+	int width, height;
+	SDL_QueryTexture(tex, 0, 0, &width, &height);
+	CRect r = theme->GetArrowDownPosition();
+	SDL_Rect dst_rect = { r.x, r.y, width, height };
+	SDL_RenderCopy(renderer, tex, 0, &dst_rect);
+}
+
+void CMenu::RenderUpArrow(SDL_Renderer *renderer)
+{
+	CTheme *theme = GetProgram()->GetTheme();
+
+	SDL_Texture *tex = theme->GetArrowUp();
+	int width, height;
+	SDL_QueryTexture(tex, 0, 0, &width, &height);
+	CRect r = theme->GetArrowUpPosition();
+	SDL_Rect dst_rect = { r.x, r.y, width, height };
+	SDL_RenderCopy(renderer, tex, 0, &dst_rect);
+}
+
 
 
 
@@ -90,6 +114,12 @@ void CListMenu::Render(SDL_Renderer *renderer)
 
 		y += theme->GetListMenuEntryDistance();
 	}
+
+	if(scroll > 0)
+		RenderUpArrow(renderer);
+
+	if(scroll + theme->GetMaxListMenuEntries() < (int)menu_entries.size())
+		RenderDownArrow(renderer);
 }
 
 void CListMenu::OnInputFire(void)
@@ -204,6 +234,12 @@ void CThumbsMenu::Render(SDL_Renderer *renderer)
 			x += theme->GetThumbsMenuEntryDistanceX() + width;
 
 	}
+
+	if(scroll > 0)
+		RenderUpArrow(renderer);
+
+	if(scroll + theme->GetMaxThumbsMenuEntriesY() < (int)ceil((float)menu_entries.size() / (float)theme->GetMaxThumbsMenuEntriesX()))
+		RenderDownArrow(renderer);
 }
 
 
