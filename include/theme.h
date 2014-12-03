@@ -28,9 +28,9 @@ class CTheme
 		bool loaded_completely;
 
 		void Load(void);
-		SDL_Surface *LoadSurface(const char *file);
-		SDL_Texture *LoadImage(const char *file);
-		TTF_Font *LoadFont(const char *file, int size);
+		SDL_Surface *LoadSurface(string file);
+		SDL_Texture *LoadImage(string file);
+		TTF_Font *LoadFont(string file, int size);
 
 		void UnLoad(void);
 		void UnLoadImage(SDL_Texture *tex);

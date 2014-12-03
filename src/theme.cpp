@@ -19,10 +19,12 @@ void CTheme::Load(void)
 	screen_width = 1024;
 	screen_height = 768;
 
-	background = LoadImage("themes/test/background.png");
-	list_menu_entry_font = LoadFont("themes/test/Ponderosa.ttf", 25);
-	thumbs_menu_entry_font = LoadFont("themes/test/Ponderosa.ttf", 16);
-	thumbnail_border = LoadSurface("themes/test/thumbnail_border.png");
+	string theme_folder = string(THEME_FOLDER) + string("/");
+
+	background = LoadImage(theme_folder + string("background.png"));
+	list_menu_entry_font = LoadFont(theme_folder + string("Ponderosa.ttf"), 25);
+	thumbs_menu_entry_font = LoadFont(theme_folder + string("Ponderosa.ttf"), 16);
+	thumbnail_border = LoadSurface(theme_folder + string("thumbnail_border.png"));
 
 	menu_rect = CRect(75, 75, screen_width - 75*2, 682 - 75);
 	list_menu_entry_distance = 38;
@@ -48,17 +50,17 @@ void CTheme::UnLoad(void)
 	UnLoadFont(thumbs_menu_entry_font);
 }
 
-SDL_Surface *CTheme::LoadSurface(const char *file)
+SDL_Surface *CTheme::LoadSurface(string file)
 {
-	SDL_Surface *s = IMG_Load(file);
+	SDL_Surface *s = IMG_Load(file.c_str());
 	if(!s)
 		loaded_completely = false;
 	return s;
 }
 
-SDL_Texture *CTheme::LoadImage(const char *file)
+SDL_Texture *CTheme::LoadImage(string file)
 {
-	SDL_Texture *texture = program->LoadImage(file);
+	SDL_Texture *texture = program->LoadImage(file.c_str());
 
 	if(!texture)
 		loaded_completely = false;
@@ -66,9 +68,9 @@ SDL_Texture *CTheme::LoadImage(const char *file)
 	return texture;
 }
 
-TTF_Font *CTheme::LoadFont(const char *file, int size)
+TTF_Font *CTheme::LoadFont(string file, int size)
 {
-	TTF_Font *font = TTF_OpenFont(file, size);
+	TTF_Font *font = TTF_OpenFont(file.c_str(), size);
 	if(!font)
 		loaded_completely = false;
 	return font;

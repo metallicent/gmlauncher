@@ -71,6 +71,7 @@ CCommandMenuEntry::~CCommandMenuEntry(void)
 void CCommandMenuEntry::Trigger(void)
 {
 	system(command.c_str());
+	GetProgram()->SkipEvents();
 }
 
 

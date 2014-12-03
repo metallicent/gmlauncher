@@ -21,6 +21,7 @@ class CLauncherProgram
 		CLauncherProgram(void);
 		~CLauncherProgram(void);
 
+		void SkipEvents(void);
 		void ProcessEvent(SDL_Event event);
 		void Update(void);
 		void Render(void);

@@ -35,6 +35,12 @@ void CLauncherProgram::Update(void)
 {
 }
 
+void CLauncherProgram::SkipEvents(void)
+{
+	SDL_Event e;
+	while(SDL_PollEvent(&e));
+}
+
 void CLauncherProgram::ProcessEvent(SDL_Event event)
 {
 	switch(event.type)
@@ -49,30 +55,30 @@ void CLauncherProgram::OnKeyDown(SDL_KeyboardEvent event)
 {
 	switch(event.keysym.scancode)
 	{
-		case SDL_SCANCODE_F1:
+		case INPUT_KEY_QUIT:
 			Quit();
 			break;
-		case SDL_SCANCODE_UP:
+		case INPUT_KEY_UP:
 			if(current_screen)
 				current_screen->OnInputDirection(UP);
 			break;
-		case SDL_SCANCODE_DOWN:
+		case INPUT_KEY_DOWN:
 			if(current_screen)
 				current_screen->OnInputDirection(DOWN);
 			break;
-		case SDL_SCANCODE_LEFT:
+		case INPUT_KEY_LEFT:
 			if(current_screen)
 				current_screen->OnInputDirection(LEFT);
 			break;
-		case SDL_SCANCODE_RIGHT:
+		case INPUT_KEY_RIGHT:
 			if(current_screen)
 				current_screen->OnInputDirection(RIGHT);
 			break;
-		case SDL_SCANCODE_SPACE:
+		case INPUT_KEY_FIRE:
 			if(current_screen)
 				current_screen->OnInputFire();
 			break;
-		case SDL_SCANCODE_ESCAPE:
+		case INPUT_KEY_BACK:
 			ChangeToPreviousScreen();
 			break;
 		default:
