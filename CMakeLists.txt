@@ -30,3 +30,5 @@ TARGET_LINK_LIBRARIES(gmlauncher ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2
 find_package(LibXml2 REQUIRED)
 include_directories(${LIBXML2_INCLUDE_DIR})
 target_link_libraries(gmlauncher ${LIBXML2_LIBRARIES})
+
+install(TARGETS gmlauncher DESTINATION bin)
