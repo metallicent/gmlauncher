@@ -4,22 +4,33 @@
 
 class CMenu : public CScreen
 {
-	private:
+	protected:
 		vector<CMenuEntry *> menu_entries;
 
+	public:
+		CMenu(CLauncherProgram *program, CScreen *previous);
+		virtual ~CMenu(void);
+
+		void Render(SDL_Renderer *renderer) =0;
+
+		void AddEntry(CMenuEntry *entry);
+};
+
+class CListMenu : public CMenu
+{
+	private:
 		int selected_entry;
 		int scroll;
 
 	public:
-		CMenu(CLauncherProgram *program, CScreen *previous);
-		~CMenu(void);
+		CListMenu(CLauncherProgram *program, CScreen *previous);
+		~CListMenu(void);
 
 		void Render(SDL_Renderer *renderer);
 
 		void OnInputDirection(InputDirection dir);
 		void OnInputFire(void);
 
-		void AddEntry(CMenuEntry *entry);
 };
 
 #endif

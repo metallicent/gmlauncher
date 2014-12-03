@@ -5,5 +5,7 @@
 
 enum InputDirection { UP, DOWN, LEFT, RIGHT };
 
+enum MenuType { LIST_MENU, THUMBS_MENU };
+
 
 #endif

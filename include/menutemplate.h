@@ -7,19 +7,16 @@ class CMenuEntryTemplate;
 
 class CMenuTemplate : public CScreenTemplate
 {
-	public:
-		enum Type { LIST_MENU, THUMBS_MENU };
-
 	private:
 		CLauncherProgram *program;
 
 		string name;
-		Type type;
+		MenuType type;
 
 		vector<CMenuEntryTemplate *> entries;
 
 	public:
-		CMenuTemplate(CLauncherProgram *program, string name, Type type);
+		CMenuTemplate(CLauncherProgram *program, string name, MenuType type);
 		~CMenuTemplate(void);
 
 		void AddEntry(CMenuEntryTemplate *entry);

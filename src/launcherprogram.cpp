@@ -14,6 +14,8 @@ CLauncherProgram::CLauncherProgram(void)
 		throw "Failed to create Renderer";
 	}
 
+	SDL_ShowCursor(SDL_DISABLE);
+
 	theme = new CTheme(this);
 
 	menu_structure = new CMenuStructure(this, "menu_structure.xml");
@@ -97,6 +99,9 @@ void CLauncherProgram::Quit(void)
 
 void CLauncherProgram::ChangeToScreen(CScreen *screen)
 {
+	if(!screen)
+		return;
+
 	screen->SetPreviousScreen(current_screen);
 	current_screen = screen;
 }

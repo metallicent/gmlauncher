@@ -14,7 +14,9 @@ class CTheme
 
 		CRect menu_rect;
 		int list_menu_entry_distance;
-		SDL_Color menu_text_color;
+		SDL_Color unselected_menu_text_color;
+		SDL_Color selected_menu_text_color;
+		SDL_Color selected_menu_text_background_color;
 
 
 		bool loaded_completely;
@@ -40,7 +42,14 @@ class CTheme
 		CRect GetMenuRect(void)				{ return menu_rect; }
 		int GetListMenuEntryDistance(void)	{ return list_menu_entry_distance; }
 		int GetMaxListMenuEntries(void)		{ return max(0, menu_rect.height / list_menu_entry_distance - 1); }
-		SDL_Color GetMenuTextColor(void)	{ return menu_text_color; }
+		SDL_Color GetUnselectedMenuEntryTextColor(void)		{ return unselected_menu_text_color; }
+		SDL_Color GetSelectedMenuEntryTextColor(void)		{ return selected_menu_text_color; }
+		SDL_Color GetSelectedMenuTextBackgroundColor(void)	{ return selected_menu_text_background_color; }
+
+		SDL_Texture *RenderUnselectedListMenuEntry(string text);
+		SDL_Texture *RenderSelectedListMenuEntry(string text);
+
+		static SDL_Color CreateColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 };
 
 #endif

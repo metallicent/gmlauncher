@@ -2,7 +2,7 @@
 #include "includes.h"
 
 
-CMenuTemplate::CMenuTemplate(CLauncherProgram *program, string name, Type type)
+CMenuTemplate::CMenuTemplate(CLauncherProgram *program, string name, MenuType type)
 {
 	this->program = program;
 	this->name = name;
@@ -26,10 +26,26 @@ void CMenuTemplate::AddEntry(CMenuEntryTemplate *entry)
 
 CScreen *CMenuTemplate::CreateScreen(CScreen *previous)
 {
-	CMenu *m = new CMenu(program, previous);
+	CMenu *m;
+
+	switch(type)
+	{
+		case LIST_MENU:
+			m = new CListMenu(program, previous);
+			break;
+		case THUMBS_MENU:
+			return 0; // TODO
+			break;
+		default:
+			return 0;
+	}
 
 	for(vector<CMenuEntryTemplate *>::iterator i=entries.begin(); i!=entries.end(); i++)
-		m->AddEntry((*i)->CreateMenuEntry());
+	{
+		CMenuEntry *e;
+		m->AddEntry(e = (*i)->CreateMenuEntry());
+		e->Render(type);
+	}
 
 	return m;
 }

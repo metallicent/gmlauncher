@@ -30,8 +30,9 @@ class CLauncherProgram
 		void ChangeToScreen(CScreen *screen);
 		void ChangeToPreviousScreen(void);
 
-		bool GetRunning(void)	{ return running; }
-		CTheme *GetTheme(void)	{ return theme; }
+		bool GetRunning(void)			{ return running; }
+		CTheme *GetTheme(void)			{ return theme; }
+		SDL_Renderer *GetRenderer(void)	{ return renderer; }
 
 		SDL_Texture *LoadImage(const char *file);
 };

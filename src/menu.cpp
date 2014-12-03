@@ -3,8 +3,6 @@
 
 CMenu::CMenu(CLauncherProgram *program, CScreen *previous) : CScreen(program, previous)
 {
-	selected_entry = 0;
-	scroll = 0;
 }
 
 CMenu::~CMenu(void)
@@ -18,40 +16,20 @@ void CMenu::AddEntry(CMenuEntry *entry)
 	menu_entries.push_back(entry);
 }
 
-void CMenu::Render(SDL_Renderer *renderer)
+
+
+
+CListMenu::CListMenu(CLauncherProgram *program, CScreen *previous) : CMenu(program, previous)
 {
-	CTheme *theme = GetProgram()->GetTheme();
-	CRect menu_rect = theme->GetMenuRect();
-
-	int x, y;
-
-	x = menu_rect.x;
-	y = menu_rect.y;
-
-	CMenuEntry *entry;
-	for(int i=scroll; i<(int)menu_entries.size(); i++)
-	{
-		if(i-scroll > theme->GetMaxListMenuEntries())
-			break;
-
-		entry = menu_entries[i];
-
-		SDL_Surface *surface = TTF_RenderText_Solid(theme->GetMenuEntryFont(), ((i==selected_entry?string(">"):string()) + entry->GetText()).c_str(), theme->GetMenuTextColor());
-		SDL_Texture *tex = SDL_CreateTextureFromSurface(renderer, surface);
-		SDL_FreeSurface(surface);
-
-		int width, height;
-		SDL_QueryTexture(tex, 0, 0, &width, &height);
-		SDL_Rect dst_rect = { x, y, width, height };
-		SDL_RenderCopy(renderer, tex, 0, &dst_rect);
-
-		y += theme->GetListMenuEntryDistance();
-
-		SDL_DestroyTexture(tex);
-	}
+	selected_entry = 0;
+	scroll = 0;
 }
 
-void CMenu::OnInputDirection(InputDirection dir)
+CListMenu::~CListMenu(void)
+{
+}
+
+void CListMenu::OnInputDirection(InputDirection dir)
 {
 	if(menu_entries.size() == 0)
 		return;
@@ -80,7 +58,41 @@ void CMenu::OnInputDirection(InputDirection dir)
 		scroll = selected_entry - (GetProgram()->GetTheme()->GetMaxListMenuEntries() - 1);
 }
 
-void CMenu::OnInputFire(void)
+
+void CListMenu::Render(SDL_Renderer *renderer)
+{
+	CTheme *theme = GetProgram()->GetTheme();
+	CRect menu_rect = theme->GetMenuRect();
+
+	int x, y;
+
+	x = menu_rect.x;
+	y = menu_rect.y;
+
+	CMenuEntry *entry;
+	for(int i=scroll; i<(int)menu_entries.size(); i++)
+	{
+		if(i-scroll > theme->GetMaxListMenuEntries())
+			break;
+
+		entry = menu_entries[i];
+
+		SDL_Texture *tex;
+		if(i==selected_entry)
+			tex = entry->GetSelectedTexture();
+		else
+			tex = entry->GetUnselectedTexture();
+
+		int width, height;
+		SDL_QueryTexture(tex, 0, 0, &width, &height);
+		SDL_Rect dst_rect = { x, y, width, height };
+		SDL_RenderCopy(renderer, tex, 0, &dst_rect);
+
+		y += theme->GetListMenuEntryDistance();
+	}
+}
+
+void CListMenu::OnInputFire(void)
 {
 	if(menu_entries.size() > 0)
 		menu_entries[selected_entry]->Trigger();

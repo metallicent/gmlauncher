@@ -77,7 +77,7 @@ void CMenuStructure::ParseMenuNode(xmlNodePtr node)
 	xmlNodePtr child;
 	xmlChar *prop;
 	string name;
-	CMenuTemplate::Type type = CMenuTemplate::LIST_MENU;
+	MenuType type = LIST_MENU;
 
 	string entry_text;
 	string entry_param;
@@ -96,9 +96,9 @@ void CMenuStructure::ParseMenuNode(xmlNodePtr node)
 	if((prop = xmlGetProp(node, (const xmlChar *)"type")))
 	{
 		if(xmlStrEqual(prop, (const xmlChar *)"list"))
-			type = CMenuTemplate::LIST_MENU;
+			type = LIST_MENU;
 		else if(xmlStrEqual(prop, (const xmlChar *)"thumbs"))
-			type = CMenuTemplate::THUMBS_MENU;
+			type = THUMBS_MENU;
 	}
 
 	menu_template = new CMenuTemplate(program, name, type);

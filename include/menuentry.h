@@ -9,12 +9,22 @@ class CMenuEntry
 
 		string text;
 
+		SDL_Texture *unselected_tex;
+		SDL_Texture *selected_tex;
+
+		void RenderList(void);
+		void RenderThumb(void);
+
 	public:
 		CMenuEntry(CLauncherProgram *program, string text);
 		virtual ~CMenuEntry(void);
 
 		string GetText(void)				{ return text; }
 		CLauncherProgram *GetProgram(void)	{ return program; }
+
+		void Render(MenuType menu_type);
+		SDL_Texture *GetUnselectedTexture(void)	{ return unselected_tex; }
+		SDL_Texture *GetSelectedTexture(void)	{ return selected_tex; }
 
 		virtual void Trigger(void) {};
 };
