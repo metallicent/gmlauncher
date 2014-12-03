@@ -22,6 +22,7 @@ void CTheme::Load(void)
 	background = LoadImage("themes/test/background.png");
 	list_menu_entry_font = LoadFont("themes/test/Ponderosa.ttf", 25);
 	thumbs_menu_entry_font = LoadFont("themes/test/Ponderosa.ttf", 16);
+	thumbnail_border = LoadSurface("themes/test/thumbnail_border.png");
 
 	menu_rect = CRect(75, 75, screen_width - 75*2, 682 - 75);
 	list_menu_entry_distance = 38;
@@ -35,6 +36,24 @@ void CTheme::Load(void)
 	thumbs_menu_entry_height = thumb_height + 25;
 	thumbs_menu_entry_distance_x = (menu_rect.width - thumbs_menu_entry_width * GetMaxThumbsMenuEntriesX()) / (GetMaxThumbsMenuEntriesX() - 1);
 	thumbs_menu_entry_distance_y = (menu_rect.height - thumbs_menu_entry_height * GetMaxThumbsMenuEntriesY()) / (GetMaxThumbsMenuEntriesY() - 1);
+}
+
+
+
+void CTheme::UnLoad(void)
+{
+	UnLoadImage(background);
+	UnLoadSurface(thumbnail_border);
+	UnLoadFont(list_menu_entry_font);
+	UnLoadFont(thumbs_menu_entry_font);
+}
+
+SDL_Surface *CTheme::LoadSurface(const char *file)
+{
+	SDL_Surface *s = IMG_Load(file);
+	if(!s)
+		loaded_completely = false;
+	return s;
 }
 
 SDL_Texture *CTheme::LoadImage(const char *file)
@@ -56,16 +75,18 @@ TTF_Font *CTheme::LoadFont(const char *file, int size)
 }
 
 
-void CTheme::UnLoad(void)
-{
-	UnLoadImage(background);
-}
-
 void CTheme::UnLoadImage(SDL_Texture *tex)
 {
 	if(!tex)
 		return;
 	SDL_DestroyTexture(tex);
+}
+
+void CTheme::UnLoadSurface(SDL_Surface *surface)
+{
+	if(!surface)
+		return;
+	SDL_FreeSurface(surface);
 }
 
 void CTheme::UnLoadFont(TTF_Font *font)
@@ -139,6 +160,8 @@ SDL_Surface *CTheme::RenderBasicThumbsMenuEntry(SDL_Surface *thumb)
 	}
 	else
 		SDL_FillRect(surface, &dst, 0xff0000ff);
+
+	SDL_BlitSurface(GetThumbnailBorder(), 0, surface, 0);
 
 	return surface;
 }

@@ -11,6 +11,8 @@ class CTheme
 		TTF_Font *list_menu_entry_font;
 		TTF_Font *thumbs_menu_entry_font;
 
+		SDL_Surface *thumbnail_border;
+
 		int screen_width, screen_height;
 
 		CRect menu_rect;
@@ -26,12 +28,14 @@ class CTheme
 		bool loaded_completely;
 
 		void Load(void);
+		SDL_Surface *LoadSurface(const char *file);
 		SDL_Texture *LoadImage(const char *file);
 		TTF_Font *LoadFont(const char *file, int size);
 
 		void UnLoad(void);
 		void UnLoadImage(SDL_Texture *tex);
 		void UnLoadFont(TTF_Font *font);
+		void UnLoadSurface(SDL_Surface *surface);
 
 		SDL_Surface *RenderBasicThumbsMenuEntry(SDL_Surface *thumb);
 
@@ -42,6 +46,8 @@ class CTheme
 		SDL_Texture *GetBackground(void)	{ return background; }
 		TTF_Font *GetListMenuEntryFont(void)	{ return list_menu_entry_font; }
 		TTF_Font *GetThumbsMenuEntryFont(void)	{ return thumbs_menu_entry_font; }
+
+		SDL_Surface *GetThumbnailBorder(void)	{ return thumbnail_border; }
 
 		bool GetLoadedCompletely(void)		{ return loaded_completely; }
 		int GetScreenWidth(void)			{ return screen_width; }
