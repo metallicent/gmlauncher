@@ -15,6 +15,9 @@
 // defines where the fonts and images of the theme are
 #define THEME_FOLDER			"themes/test"
 
+// defines from where the thumbnails will be loaded
+#define THUMBNAILS_FOLDER		""
+
 // Key bindings
 #define INPUT_KEY_UP			SDL_SCANCODE_UP
 #define INPUT_KEY_DOWN			SDL_SCANCODE_DOWN

@@ -18,7 +18,7 @@ CLauncherProgram::CLauncherProgram(void)
 
 	theme = new CTheme(this);
 	if(!theme->GetLoadedCompletely())
-		printf("Warning: Theme could not be loaded completely!");
+		printf("Warning: Theme could not be loaded completely!\n");
 
 	menu_structure = new CMenuStructure(this, MENU_STRUCTURE_FILE);
 	current_screen = menu_structure->CreateMainScreen();
