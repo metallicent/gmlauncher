@@ -3,7 +3,7 @@
 
 CLauncherProgram::CLauncherProgram(void)
 {
-	window = SDL_CreateWindow("gmlauncher", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | (FULLSCREEN_ENABLED ? SDL_WINDOW_FULLSCREEN : 0));
+	window = SDL_CreateWindow("gmlauncher", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (FULLSCREEN_ENABLED ? SDL_WINDOW_FULLSCREEN : 0));
 	if(!window)
 		throw "Failed to create Window";
 

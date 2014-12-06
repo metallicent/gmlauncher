@@ -16,7 +16,7 @@
 #define THEME_FOLDER			"themes/test"
 
 // defines from where the thumbnails will be loaded
-#define THUMBNAILS_FOLDER		""
+#define THUMBNAILS_FOLDER		"thumbnails"
 
 // Key bindings
 #define INPUT_KEY_UP			SDL_SCANCODE_UP

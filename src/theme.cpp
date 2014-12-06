@@ -1,6 +1,19 @@
 
 #include "includes.h"
 
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    const Uint32 rmask = 0xff000000;
+    const Uint32 gmask = 0x00ff0000;
+    const Uint32 bmask = 0x0000ff00;
+    const Uint32 amask = 0x000000ff;
+#else
+    const Uint32 rmask = 0x000000ff;
+    const Uint32 gmask = 0x0000ff00;
+    const Uint32 bmask = 0x00ff0000;
+    const Uint32 amask = 0xff000000;
+#endif
+
+
 CTheme::CTheme(CLauncherProgram *program)
 {
 	this->program = program;
@@ -134,13 +147,8 @@ SDL_Texture *CTheme::RenderSelectedListMenuEntry(string text)
 
 SDL_Surface *CTheme::RenderBasicThumbsMenuEntry(SDL_Surface *thumb, bool selected)
 {
-	Uint32 rmask = 0xff000000;
-	Uint32 gmask = 0x00ff0000;
-	Uint32 bmask = 0x0000ff00;
-	Uint32 amask = 0x000000ff;
-
 	SDL_Surface *surface = SDL_CreateRGBSurface(0, thumbs_menu_entry_width, thumbs_menu_entry_height, 32, rmask, gmask, bmask, amask);
-	SDL_FillRect(surface, 0, 0x00000000);
+	SDL_FillRect(surface, 0, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
 
 	SDL_Rect dst, src;
 
@@ -228,14 +236,9 @@ SDL_Color CTheme::CreateColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 
 SDL_Surface *CTheme::RenderTextWithBackground(TTF_Font *font, string text, SDL_Color fg, SDL_Color bg)
 {
-	Uint32 rmask = 0xff000000;
-	Uint32 gmask = 0x00ff0000;
-	Uint32 bmask = 0x0000ff00;
-	Uint32 amask = 0x000000ff;
-
 	SDL_Surface *text_surface = TTF_RenderText_Solid(font, text.c_str(), fg);
 
-	SDL_Surface *surface = SDL_CreateRGBSurface(0, text_surface->w, text_surface->h, 32, rmask, gmask, bmask, amask);
+	SDL_Surface *surface = SDL_CreateRGBSurface(0, text_surface->w, text_surface->h, 32, 0, 0, 0, 0);
 	SDL_FillRect(surface, 0, SDL_MapRGBA(surface->format, bg.r, bg.g, bg.b, bg.a));
 	SDL_BlitSurface(text_surface, 0, surface, 0);
 	SDL_FreeSurface(text_surface);

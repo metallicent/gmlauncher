@@ -73,7 +73,7 @@ CMenuEntryTemplate::~CMenuEntryTemplate(void)
 
 void CMenuEntryTemplate::LoadThumbnail(string file)
 {
-	thumb_surface = IMG_Load((string(THUMBNAILS_FOLDER) + file).c_str());
+	thumb_surface = IMG_Load((string(THUMBNAILS_FOLDER) + string("/") + file).c_str());
 }
 
 
