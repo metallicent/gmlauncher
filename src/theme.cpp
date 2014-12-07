@@ -375,6 +375,7 @@ SDL_Texture *CTheme::RenderUnselectedThumbsMenuEntry(string text, SDL_Surface *t
 	if(text_surface->h < thumbs_menu_entry_text_height_dist_threshold)
 		r.y += 4;
 
+	SDL_SetSurfaceBlendMode(text_surface, SDL_BLENDMODE_NONE);
 	SDL_BlitSurface(text_surface, 0, surface, &r);
 	SDL_FreeSurface(text_surface);
 
@@ -396,6 +397,7 @@ SDL_Texture *CTheme::RenderSelectedThumbsMenuEntry(string text, SDL_Surface *thu
 	if(text_surface->h < thumbs_menu_entry_text_height_dist_threshold)
 		r.y += 4;
 
+	SDL_SetSurfaceBlendMode(text_surface, SDL_BLENDMODE_NONE);
 	SDL_BlitSurface(text_surface, 0, surface, &r);
 	SDL_FreeSurface(text_surface);
 
