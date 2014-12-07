@@ -36,6 +36,7 @@ class CTheme
 		SDL_Surface *LoadSurface(string file);
 		SDL_Texture *LoadTexture(string file);
 		TTF_Font *LoadFont(string file, int size);
+		SDL_Surface *LoadBorder(int width, int height, string left, string right, string top, string bottom, string left_top, string right_top, string left_bottom, string right_bottom);
 
 		void UnLoad(void);
 		void UnLoadTexture(SDL_Texture *tex);
