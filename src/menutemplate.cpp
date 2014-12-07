@@ -110,8 +110,9 @@ CMenuEntry *CScreenMenuEntryTemplate::CreateMenuEntry(void)
 }
 
 
-CQuitMenuEntryTemplate::CQuitMenuEntryTemplate(CLauncherProgram *program, string text, string thumb_file) : CMenuEntryTemplate(program, text, thumb_file)
+CQuitMenuEntryTemplate::CQuitMenuEntryTemplate(CLauncherProgram *program, string text, string command, string thumb_file) : CMenuEntryTemplate(program, text, thumb_file)
 {
+	this->command = command;
 }
 
 CQuitMenuEntryTemplate::~CQuitMenuEntryTemplate(void)
@@ -120,7 +121,7 @@ CQuitMenuEntryTemplate::~CQuitMenuEntryTemplate(void)
 
 CMenuEntry *CQuitMenuEntryTemplate::CreateMenuEntry(void)
 {
-	return new CQuitMenuEntry(program, text, thumb_surface);
+	return new CQuitMenuEntry(program, text, command, thumb_surface);
 }
 
 

@@ -57,8 +57,11 @@ class CScreenMenuEntry : public CMenuEntry
 
 class CQuitMenuEntry : public CMenuEntry
 {
+	private:
+		string command;
+
 	public:
-		CQuitMenuEntry(CLauncherProgram *program, string text, SDL_Surface *thumb_surface = 0);
+		CQuitMenuEntry(CLauncherProgram *program, string text, string command, SDL_Surface *thumb_surface = 0);
 		~CQuitMenuEntry(void);
 
 		void Trigger(void);

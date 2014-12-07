@@ -97,8 +97,9 @@ void CScreenMenuEntry::Trigger(void)
 
 
 
-CQuitMenuEntry::CQuitMenuEntry(CLauncherProgram *program, string text, SDL_Surface *thumb_surface) : CMenuEntry(program, text, thumb_surface)
+CQuitMenuEntry::CQuitMenuEntry(CLauncherProgram *program, string text, string command, SDL_Surface *thumb_surface) : CMenuEntry(program, text, thumb_surface)
 {
+	this->command = command;
 }
 
 CQuitMenuEntry::~CQuitMenuEntry(void)
@@ -107,5 +108,8 @@ CQuitMenuEntry::~CQuitMenuEntry(void)
 
 void CQuitMenuEntry::Trigger(void)
 {
+	if(command.size() > 0)
+		system(command.c_str());
+
 	GetProgram()->Quit();
 }

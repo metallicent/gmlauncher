@@ -71,8 +71,11 @@ class CScreenMenuEntryTemplate : public CMenuEntryTemplate
 
 class CQuitMenuEntryTemplate : public CMenuEntryTemplate
 {
+	private:
+		string command;
+
 	public:
-		CQuitMenuEntryTemplate(CLauncherProgram *program, string text, string thumb_file = string());
+		CQuitMenuEntryTemplate(CLauncherProgram *program, string text, string command, string thumb_file = string());
 		~CQuitMenuEntryTemplate(void);
 
 		CMenuEntry *CreateMenuEntry(void);

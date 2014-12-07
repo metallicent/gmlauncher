@@ -80,7 +80,7 @@ void CMenuStructure::ParseMenuNode(xmlNodePtr node)
 	MenuType type = LIST_MENU;
 
 	string entry_text;
-	string entry_param;
+	string entry_menu, entry_command;
 	enum EntryAction { COMMAND_ACTION, MENU_ACTION, QUIT_ACTION } entry_action;
 	string entry_thumb_file;
 
@@ -131,13 +131,22 @@ void CMenuStructure::ParseMenuNode(xmlNodePtr node)
 			else
 				entry_thumb_file = string();
 
-			// param
-			if(entry_action == COMMAND_ACTION || entry_action == MENU_ACTION)
+			// menu
+			if(entry_action == MENU_ACTION)
 			{
-				if((prop = xmlGetProp(child, (const xmlChar *)"param")))
-					entry_param = string((const char *)prop);
+				if((prop = xmlGetProp(child, (const xmlChar *)"menu")))
+					entry_menu = string((const char *)prop);
 				else
-					entry_param = string();
+					entry_menu = string();
+			}
+
+			// command
+			if(entry_action == COMMAND_ACTION || entry_action == QUIT_ACTION)
+			{
+				if((prop = xmlGetProp(child, (const xmlChar *)"command")))
+					entry_command = string((const char *)prop);
+				else
+					entry_command = string();
 			}
 
 
@@ -145,13 +154,13 @@ void CMenuStructure::ParseMenuNode(xmlNodePtr node)
 			switch(entry_action)
 			{
 				case COMMAND_ACTION:
-					entry_template = new CCommandMenuEntryTemplate(program, entry_text, entry_param, entry_thumb_file);
+					entry_template = new CCommandMenuEntryTemplate(program, entry_text, entry_command, entry_thumb_file);
 					break;
 				case MENU_ACTION:
-					entry_template = new CScreenMenuEntryTemplate(program, entry_text, this, entry_param, entry_thumb_file);
+					entry_template = new CScreenMenuEntryTemplate(program, entry_text, this, entry_menu, entry_thumb_file);
 					break;
 				case QUIT_ACTION:
-					entry_template = new CQuitMenuEntryTemplate(program, entry_text, entry_thumb_file);
+					entry_template = new CQuitMenuEntryTemplate(program, entry_text, entry_command, entry_thumb_file);
 					break;
 				default:
 					entry_template = 0;
