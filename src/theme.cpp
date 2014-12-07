@@ -148,6 +148,16 @@ SDL_Surface *CTheme::LoadBorder(int width, int height, string left, string right
 		return 0;
 	}
 
+	SDL_SetSurfaceBlendMode(left_surface, SDL_BLENDMODE_NONE);
+	SDL_SetSurfaceBlendMode(right_surface, SDL_BLENDMODE_NONE);
+	SDL_SetSurfaceBlendMode(top_surface, SDL_BLENDMODE_NONE);
+	SDL_SetSurfaceBlendMode(bottom_surface, SDL_BLENDMODE_NONE);
+	SDL_SetSurfaceBlendMode(left_top_surface, SDL_BLENDMODE_NONE);
+	SDL_SetSurfaceBlendMode(right_top_surface, SDL_BLENDMODE_NONE);
+	SDL_SetSurfaceBlendMode(left_bottom_surface, SDL_BLENDMODE_NONE);
+	SDL_SetSurfaceBlendMode(right_bottom_surface, SDL_BLENDMODE_NONE);
+
+
 	SDL_Surface *border = SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask);
 
 	SDL_FillRect(border, 0, SDL_MapRGBA(border->format, 0, 0, 0, 0));
@@ -248,6 +258,7 @@ SDL_Surface *CTheme::LoadBorder(int width, int height, string left, string right
 	dst.w = right_bottom_surface->w;
 	dst.w = right_bottom_surface->h;
 	SDL_BlitSurface(right_bottom_surface, 0, border, &dst);
+
 
 
 	SDL_FreeSurface(left_surface);
