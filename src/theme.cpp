@@ -38,7 +38,7 @@ void CTheme::Load(void)
 	arrow_down_x = screen_width - 30;	arrow_down_y = screen_height - 120;
 	arrow_up_x = arrow_down_x;			arrow_up_y = 50;
 
-	menu_rect = CRect(75, 75, screen_width - 75*2, 682 - 75);
+	menu_rect = CRect(65, 65, screen_width - 65*2, 682 - 65);
 	list_menu_entry_distance = 38;
 	unselected_menu_text_color = CreateColor(255, 255, 255);
 	selected_menu_text_color = CreateColor(0, 0, 0);
@@ -47,7 +47,10 @@ void CTheme::Load(void)
 	thumb_width = 160;
 	thumb_height = 110;
 	thumbs_menu_entry_width = thumb_width;
-	thumbs_menu_entry_height = thumb_height + 25;
+	thumbs_menu_entry_height = thumb_height + 40;
+	thumbs_menu_entry_max_text_lines = 2;
+	thumbs_menu_entry_line_dist = 15;
+	thumbs_menu_entry_text_height_dist_threshold = 20;
 
 	thumbs_menu_entry_distance_x = (menu_rect.width - thumbs_menu_entry_width * GetMaxThumbsMenuEntriesX()) / (GetMaxThumbsMenuEntriesX() - 1);
 	thumbs_menu_entry_distance_y = (menu_rect.height - thumbs_menu_entry_height * GetMaxThumbsMenuEntriesY()) / (GetMaxThumbsMenuEntriesY() - 1);
@@ -298,7 +301,7 @@ void CTheme::UnLoadFont(TTF_Font *font)
 
 SDL_Texture *CTheme::RenderUnselectedListMenuEntry(string text)
 {
-	SDL_Surface *surface = TTF_RenderText_Solid(GetListMenuEntryFont(), text.c_str(), GetUnselectedMenuEntryTextColor());
+	SDL_Surface *surface = RenderText(GetListMenuEntryFont(), text.c_str(), GetUnselectedMenuEntryTextColor());
 	SDL_Texture *tex = SDL_CreateTextureFromSurface(program->GetRenderer(), surface);
 	SDL_FreeSurface(surface);
 
@@ -307,7 +310,7 @@ SDL_Texture *CTheme::RenderUnselectedListMenuEntry(string text)
 
 SDL_Texture *CTheme::RenderSelectedListMenuEntry(string text)
 {
-	SDL_Surface *surface = RenderTextWithBackground(GetListMenuEntryFont(), text, GetSelectedMenuEntryTextColor(), GetSelectedMenuEntryTextBackgroundColor());
+	SDL_Surface *surface = RenderText(GetListMenuEntryFont(), text, GetSelectedMenuEntryTextColor(), GetSelectedMenuEntryTextBackgroundColor());
 
 	SDL_Texture *tex = SDL_CreateTextureFromSurface(program->GetRenderer(), surface);
 	SDL_FreeSurface(surface);
@@ -364,10 +367,13 @@ SDL_Texture *CTheme::RenderUnselectedThumbsMenuEntry(string text, SDL_Surface *t
 {
 	SDL_Surface *surface = RenderBasicThumbsMenuEntry(thumb, false);
 
-	SDL_Surface *text_surface = TTF_RenderText_Solid(GetThumbsMenuEntryFont(), text.c_str(), GetUnselectedMenuEntryTextColor());
+	SDL_Surface *text_surface = RenderMultilineText(GetThumbsMenuEntryFont(), text.c_str(), surface->w,
+													thumbs_menu_entry_max_text_lines, thumbs_menu_entry_line_dist, GetUnselectedMenuEntryTextColor());
 	SDL_Rect r;
 	r.x = surface->w / 2 - text_surface->w / 2;
-	r.y = surface->h - text_surface->h;
+	r.y = thumb_height + 5;
+	if(text_surface->h < thumbs_menu_entry_text_height_dist_threshold)
+		r.y += 4;
 
 	SDL_BlitSurface(text_surface, 0, surface, &r);
 	SDL_FreeSurface(text_surface);
@@ -381,10 +387,14 @@ SDL_Texture *CTheme::RenderSelectedThumbsMenuEntry(string text, SDL_Surface *thu
 {
 	SDL_Surface *surface = RenderBasicThumbsMenuEntry(thumb, true);
 
-	SDL_Surface *text_surface = RenderTextWithBackground(GetThumbsMenuEntryFont(), text.c_str(), GetSelectedMenuEntryTextColor(), GetSelectedMenuEntryTextBackgroundColor());
+	SDL_Surface *text_surface = RenderMultilineText(GetThumbsMenuEntryFont(), text.c_str(), surface->w,
+														thumbs_menu_entry_max_text_lines, thumbs_menu_entry_line_dist,
+														GetSelectedMenuEntryTextColor(), GetSelectedMenuEntryTextBackgroundColor());
 	SDL_Rect r;
 	r.x = surface->w / 2 - text_surface->w / 2;
-	r.y = surface->h - text_surface->h;
+	r.y = thumb_height + 5;
+	if(text_surface->h < thumbs_menu_entry_text_height_dist_threshold)
+		r.y += 4;
 
 	SDL_BlitSurface(text_surface, 0, surface, &r);
 	SDL_FreeSurface(text_surface);
@@ -404,14 +414,81 @@ SDL_Color CTheme::CreateColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 	return c;
 }
 
-SDL_Surface *CTheme::RenderTextWithBackground(TTF_Font *font, string text, SDL_Color fg, SDL_Color bg)
+SDL_Surface *CTheme::RenderText(TTF_Font *font, string text, SDL_Color fg, SDL_Color bg)
 {
 	SDL_Surface *text_surface = TTF_RenderText_Solid(font, text.c_str(), fg);
 
-	SDL_Surface *surface = SDL_CreateRGBSurface(0, text_surface->w, text_surface->h, 32, 0, 0, 0, 0);
-	SDL_FillRect(surface, 0, SDL_MapRGBA(surface->format, bg.r, bg.g, bg.b, bg.a));
-	SDL_BlitSurface(text_surface, 0, surface, 0);
-	SDL_FreeSurface(text_surface);
+	if(bg.a != 0)
+	{
+		SDL_Surface *surface = SDL_CreateRGBSurface(0, text_surface->w, text_surface->h, 32, 0, 0, 0, 0);
+		SDL_FillRect(surface, 0, SDL_MapRGBA(surface->format, bg.r, bg.g, bg.b, bg.a));
+		SDL_BlitSurface(text_surface, 0, surface, 0);
+		SDL_FreeSurface(text_surface);
+
+		return surface;
+	}
+	else
+		return text_surface;
+}
+
+SDL_Surface *CTheme::RenderMultilineText(TTF_Font *font, string text, int width, int max_lines, int line_dist, SDL_Color fg, SDL_Color bg)
+{
+	SDL_Surface *full_text_surface;
+
+	full_text_surface = RenderText(font, text, fg, bg);
+
+	if(full_text_surface->w <= width || max_lines <= 1)
+		return full_text_surface;
+
+	SDL_Surface *subtext_surface = 0;
+	string this_line = text;
+	string rest_text;
+	size_t space_pos;
+	while((space_pos = this_line.find_last_of(' ')) != string::npos)
+	{
+		if(subtext_surface)
+		{
+			SDL_FreeSurface(subtext_surface);
+			SDL_FreeSurface(full_text_surface);
+		}
+
+		this_line = text.substr(0, space_pos);
+		rest_text = text.substr(space_pos+1, string::npos);
+
+		subtext_surface = RenderText(font, this_line, fg, bg);
+		if(subtext_surface->w <= width)
+			break;
+	}
+
+	if(!subtext_surface)
+		return full_text_surface;
+
+	if(rest_text.size() == 0)
+		return subtext_surface;
+
+	SDL_Surface *rest_lines_surface = RenderMultilineText(font, rest_text, width, max_lines - 1, line_dist, fg, bg);
+
+	if(!rest_lines_surface)
+		return subtext_surface;
+
+	SDL_Surface *surface = SDL_CreateRGBSurface(0, max(width, max(subtext_surface->w, rest_lines_surface->w)), line_dist + rest_lines_surface->h, 32, rmask, gmask, bmask, amask);
+	SDL_FillRect(surface, 0, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
+
+	SDL_SetSurfaceBlendMode(subtext_surface, SDL_BLENDMODE_NONE);
+	SDL_SetSurfaceBlendMode(rest_lines_surface, SDL_BLENDMODE_NONE);
+
+	SDL_Rect dst;
+
+	dst.x = surface->w / 2 - subtext_surface->w / 2;
+	dst.y = 0;
+	SDL_BlitSurface(subtext_surface, 0, surface, &dst);
+
+	dst.x = surface->w / 2 - rest_lines_surface->w / 2;
+	dst.y = line_dist;
+	SDL_BlitSurface(rest_lines_surface, 0, surface, &dst);
+
+	SDL_FreeSurface(subtext_surface);
+	SDL_FreeSurface(rest_lines_surface);
 
 	return surface;
 }

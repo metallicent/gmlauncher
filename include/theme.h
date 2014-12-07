@@ -29,6 +29,8 @@ class CTheme
 		int thumb_width, thumb_height;
 		int thumbs_menu_entry_distance_x, thumbs_menu_entry_distance_y;
 		int thumbs_menu_entry_width, thumbs_menu_entry_height;
+		int thumbs_menu_entry_max_text_lines, thumbs_menu_entry_line_dist;
+		int thumbs_menu_entry_text_height_dist_threshold;
 
 		bool loaded_completely;
 
@@ -84,7 +86,8 @@ class CTheme
 		SDL_Texture *RenderSelectedThumbsMenuEntry(string text, SDL_Surface *thumb);
 
 		static SDL_Color CreateColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
-		static SDL_Surface *RenderTextWithBackground(TTF_Font *font, string text, SDL_Color fg, SDL_Color bg);
+		static SDL_Surface *RenderText(TTF_Font *font, string text, SDL_Color fg, SDL_Color bg = CreateColor(0, 0, 0, 0));
+		static SDL_Surface *RenderMultilineText(TTF_Font *font, string text, int width, int max_lines, int line_dist, SDL_Color fg, SDL_Color bg = CreateColor(0, 0, 0, 0));
 };
 
 #endif
