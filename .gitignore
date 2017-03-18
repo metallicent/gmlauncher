@@ -16,6 +16,10 @@
 
 # Build
 build/
+cmake-build-debug/
 
 # Raw stuff
 raw/
+
+# CLion
+.idea/
